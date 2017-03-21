@@ -1,0 +1,37 @@
+{ 
+  "author": {
+    "email": "contact@wuhkuh.com",
+    "name": "Wouter Klijn",
+    "url": "https://wuhkuh.com"
+  },
+  "bugs": {
+    "url": "https://github.com/wuhkuh/protocol/issues"
+  },
+  "description": "Protocols for Node.JS",
+  "devDependencies": {
+    "faucet": "^0.0.1",
+    "pre-commit": "^1.2.2",
+    "standard": "^9.0.2",
+    "tape": "^4.6.3"
+  },
+  "keywords": [
+    "universal",
+    "protocol",
+    "parser",
+    "generator"
+  ],
+  "license": "MIT",
+  "main": "protocol.js",
+  "name": "protocol",
+  "pre-commit": "test",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wuhkuh/protocol.git"
+  },
+  "scripts": {
+    "lint": "standard",
+    "test": "standard && tape test.js | faucet"
+  },
+  "version": "0.0.1",
+  "website": "https://github.com/wuhkuh/protocol"
+}
