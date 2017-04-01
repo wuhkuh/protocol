@@ -24,23 +24,32 @@
 
 'use strict'
 
-const lib = require('./lib')                  // Library
-const flattenTree = lib.flattenTree      // Flatten schema to linear form
-const generate = lib.generate           // Generate packets using schema
-const parse = lib.parse                     // Parse packets using schema
-const setup = lib.setup                     // Remove functions from hot path
+const protocols = require('./protocols')
+const test = require('tape')
 
-/**
- * Protocol class
- * @public
- */
-class Protocol {
-  constructor (schema) {
-    this._schema = setup(flattenTree(schema))
+test('Parsing, linear template', function (t) {
+  const testPacket1 = Buffer.from('1F', 'hex')
+  const result = {
+    header: 'correct',
+    flag1: 1,
+    flag2: 1,
+    flag3: 3
   }
 
-  generate (input) { return generate(input, this._schema) }
-  parse (input) { return parse(input, this._schema) }
-}
+  t.deepEqual(protocols.linearProtocol.parse(testPacket1), result)
+  t.end()
+})
 
-module.exports = Protocol
+test('Parsing, embedded template', function (t) {
+  const testPacket2 = Buffer.from('A0', 'hex')
+  const result = {
+    firstBits: {
+      firstBit: 1,
+      secondBit: 0
+    },
+    firstNibble: 8
+  }
+
+  t.deepEqual(protocols.embeddedProtocol.parse(testPacket2), result)
+  t.end()
+})

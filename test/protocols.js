@@ -24,23 +24,22 @@
 
 'use strict'
 
-const lib = require('./lib')                  // Library
-const flattenTree = lib.flattenTree      // Flatten schema to linear form
-const generate = lib.generate           // Generate packets using schema
-const parse = lib.parse                     // Parse packets using schema
-const setup = lib.setup                     // Remove functions from hot path
+const Protocol = require('../')
+const dicts = require('./dicts')
 
-/**
- * Protocol class
- * @public
- */
-class Protocol {
-  constructor (schema) {
-    this._schema = setup(flattenTree(schema))
-  }
+const linearProtocol = new Protocol({
+  header: { length: 4, dict: dicts.linearDict.header },
+  flag1: { length: 1 },
+  flag2: { length: 1 },
+  flag3: { length: 2 }
+})
 
-  generate (input) { return generate(input, this._schema) }
-  parse (input) { return parse(input, this._schema) }
-}
+const embeddedProtocol = new Protocol({
+  firstBits: [{
+    firstBit: { length: 1 },
+    secondBit: { length: 1 }
+  }],
+  firstNibble: { length: 4 }
+})
 
-module.exports = Protocol
+module.exports = { linearProtocol, embeddedProtocol }

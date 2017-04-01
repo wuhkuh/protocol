@@ -30,7 +30,7 @@
   },
   "scripts": {
     "lint": "standard",
-    "test": "standard && tape test.js | faucet"
+    "test": "standard && tape test/test.js | faucet"
   },
   "version": "0.0.1",
   "website": "https://github.com/wuhkuh/protocol"
