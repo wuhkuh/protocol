@@ -24,3 +24,4 @@ This is only possible if the current Node.JS releases support this.
 ## TODO:
 - Testing
 - Notes, inline notes
+- Error handling
