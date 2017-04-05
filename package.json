@@ -32,6 +32,6 @@
     "lint": "standard",
     "test": "standard && tape test/test.js | faucet"
   },
-  "version": "0.0.1",
+  "version": "0.0.3",
   "website": "https://github.com/wuhkuh/protocol"
 }
