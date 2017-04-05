@@ -53,3 +53,16 @@ test('Parsing, embedded template', function (t) {
   t.deepEqual(protocols.embeddedProtocol.parse(testPacket2), result)
   t.end()
 })
+
+test('Generating, embedded template', function (t) {
+  const testPacket3 = {
+    firstBits: {
+      firstBit: 1,
+      secondBit: 0
+    },
+    firstNibble: 6
+  }
+  const result = Buffer.from('98', 'hex')
+  t.deepEqual(protocols.embeddedProtocol.generate(testPacket3), result)
+  t.end()
+})
