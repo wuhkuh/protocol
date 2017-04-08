@@ -39,19 +39,22 @@ class Protocol {
     const nodeMajorVersion = process.version.split('v')[1].split('.')[0]
 
     /*
-     * Prevent usage on old node versions, due to the Buffer vulnerability (node issue #4660),
-     * as well as discourage usage on node versions 6 or lower, due to poor ES6 performance.
+     * Prevent usage on old node versions, due to the Buffer vulnerability
+     * (node issue #4660), as well as discourage usage on node versions 6 or
+     * lower, due to poor ES6 performance.
      *
-     * There will be no workaround for this vulnerability due to requiring API changes. This might
-     * result in poor performance. In this application, performance is critical.
+     * There will be no workaround for this vulnerability due to requiring API
+     * changes. This might result in poor performance. In this application,
+     * performance is critical.
      */
 
     if (nodeMajorVersion <= 4) {
-      throw new Error('Protocol ERROR: This version of Node has a security problem with Buffers. ' +
-      'Please update your installation. (node issue #4660)')
+      throw new Error('Protocol ERROR: This version of Node has a security ' +
+      'problem with Buffers. Please update your installation. (issue #4660)')
     } else if (nodeMajorVersion <= 6) {
-      console.warn('Protocol WARNING: This version of Node has poor ES6 support, which might ' +
-      'impede performance and stability. Please update your installation.')
+      console.warn('Protocol WARNING: This version of Node has poor ES6 ' +
+      'support, which might impede performance and stability. Please update ' +
+      'your installation.')
     }
 
     this._schema = setup(flattenTree(schema))
