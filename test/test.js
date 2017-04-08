@@ -28,7 +28,7 @@ const protocols = require('./protocols')
 const test = require('tape')
 
 test('Parsing, linear template', function (t) {
-  const testPacket1 = Buffer.from('1F', 'hex')
+  const testPacket = Buffer.from('1F', 'hex')
   const result = {
     header: 'correct',
     flag1: 1,
@@ -36,12 +36,12 @@ test('Parsing, linear template', function (t) {
     flag3: 3
   }
 
-  t.deepEqual(protocols.linearProtocol.parse(testPacket1), result)
+  t.deepEqual(protocols.linearProtocol.parse(testPacket), result)
   t.end()
 })
 
 test('Parsing, embedded template', function (t) {
-  const testPacket2 = Buffer.from('A0', 'hex')
+  const testPacket = Buffer.from('A0', 'hex')
   const result = {
     firstBits: {
       firstBit: 1,
@@ -50,12 +50,30 @@ test('Parsing, embedded template', function (t) {
     firstNibble: 8
   }
 
-  t.deepEqual(protocols.embeddedProtocol.parse(testPacket2), result)
+  t.deepEqual(protocols.embeddedProtocol.parse(testPacket), result)
+  t.end()
+})
+
+test('Parsing, dynamic template', function (t) {
+  const testPacket = Buffer.from([0xFF, 0x40, 0x61, 0x62, 0x63, 0x64, 0xFF])
+  const result = {
+    header: {
+      bit1: 1,
+      bit2: 3,
+      bit3: 3,
+      bit4: 7
+    },
+    payloadLength: 4,
+    payload: 'abcd',
+    next: 15
+  }
+
+  t.deepEqual(protocols.dynamicProtocol.parse(testPacket), result)
   t.end()
 })
 
 test('Generating, embedded template', function (t) {
-  const testPacket3 = {
+  const testPacket = {
     firstBits: {
       firstBit: 1,
       secondBit: 0
@@ -63,6 +81,24 @@ test('Generating, embedded template', function (t) {
     firstNibble: 6
   }
   const result = Buffer.from('98', 'hex')
-  t.deepEqual(protocols.embeddedProtocol.generate(testPacket3), result)
+  t.deepEqual(protocols.embeddedProtocol.generate(testPacket), result)
+  t.end()
+})
+
+test.skip('Generating, dynamic template', function (t) {
+  const testPacket = {
+    header: {
+      bit1: 1,
+      bit2: 2,
+      bit3: 3,
+      bit4: 2
+    },
+    payload: {
+      length: 4,
+      payload: 'abcd'
+    }
+  }
+  const result = Buffer.from('FFFF', 'hex')
+  t.deepEqual(protocols.dynamicProtocol.generate(testPacket), result)
   t.end()
 })
