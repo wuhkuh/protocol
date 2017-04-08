@@ -28,18 +28,30 @@ const Protocol = require('../')
 const dicts = require('./dicts')
 
 const linearProtocol = new Protocol({
-  header: { length: 4, dict: dicts.linearDict.header },
-  flag1: { length: 1 },
-  flag2: { length: 1 },
-  flag3: { length: 2 }
+  header: { bitLength: 4, dict: dicts.linearDict.header },
+  flag1: { bitLength: 1 },
+  flag2: { bitLength: 1 },
+  flag3: { bitLength: 2 }
 })
 
 const embeddedProtocol = new Protocol({
   firstBits: [{
-    firstBit: { length: 1 },
-    secondBit: { length: 1 }
+    firstBit: { bitLength: 1 },
+    secondBit: { bitLength: 1 }
   }],
-  firstNibble: { length: 4 }
+  firstNibble: { bitLength: 4 }
 })
 
-module.exports = { linearProtocol, embeddedProtocol }
+const dynamicProtocol = new Protocol({
+  header: [{
+    bit1: { bitLength: 1 },
+    bit2: { bitLength: 2 },
+    bit3: { bitLength: 2 },
+    bit4: { bitLength: 3 }
+  }],
+  payloadLength: { bitLength: 4 },
+  payload: { byteLength: 'payloadLength', encoding: 'utf8' },
+  next: { bitLength: 4 }
+})
+
+module.exports = { linearProtocol, embeddedProtocol, dynamicProtocol }
