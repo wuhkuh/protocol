@@ -24,14 +24,14 @@
 
 'use strict'
 
-const lib = require('./lib')                  // Library
-const flattenTree = lib.flattenTree      // Flatten schema to linear form
-const generate = lib.generate           // Generate packets using schema
-const parse = lib.parse                     // Parse packets using schema
-const setup = lib.setup                     // Remove functions from hot path
+const lib = require('./lib')                         // Library
+const flattenSchema = lib.flattenSchema   // Flatten schema to linear form
+const generate = lib.generate                   // Generate packets using schema
+const parse = lib.parse                            // Parse packets using schema
+const setup = lib.setup                            // Setup pre-assigned masks
 
 /**
- * Create and read Buffers with the Protocol class
+ * Create and read Buffers using a schema
  * @public
  */
 class Protocol {
@@ -40,8 +40,7 @@ class Protocol {
 
     /*
      * Prevent usage on old node versions, due to the Buffer vulnerability
-     * (node issue #4660), as well as discourage usage on node versions 6 or
-     * lower, due to poor ES6 performance.
+     * (node issue #4660).
      *
      * There will be no workaround for this vulnerability due to requiring API
      * changes. This might result in poor performance. In this application,
@@ -51,13 +50,9 @@ class Protocol {
     if (nodeMajorVersion <= 4) {
       throw new Error('Protocol ERROR: This version of Node has a security ' +
       'problem with Buffers. Please update your installation. (issue #4660)')
-    } else if (nodeMajorVersion <= 6) {
-      console.warn('Protocol WARNING: This version of Node has poor ES6 ' +
-      'support, which might impede performance and stability. Please update ' +
-      'your installation.')
     }
 
-    this._schema = setup(flattenTree(schema))
+    this._schema = setup(flattenSchema(schema))
   }
 
   /**
