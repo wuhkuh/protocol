@@ -72,6 +72,17 @@ test('Parsing, dynamic template', function (t) {
   t.end()
 })
 
+test('Parsing, buffer template', function (t) {
+  const testPacket = Buffer.from([0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0x67, 0x68])
+  const result = {
+    buffer1: 'abcd',
+    buffer2: 'efgh'
+  }
+
+  t.deepEqual(protocols.bufferOnly.parse(testPacket), result)
+  t.end()
+})
+
 test('Generating, embedded template', function (t) {
   const testPacket = {
     firstBits: {
@@ -81,11 +92,12 @@ test('Generating, embedded template', function (t) {
     firstNibble: 6
   }
   const result = Buffer.from('98', 'hex')
+
   t.deepEqual(protocols.embeddedProtocol.generate(testPacket), result)
   t.end()
 })
 
-test.skip('Generating, dynamic template', function (t) {
+test('Generating, dynamic template', function (t) {
   const testPacket = {
     header: {
       bit1: 1,
@@ -93,12 +105,23 @@ test.skip('Generating, dynamic template', function (t) {
       bit3: 3,
       bit4: 2
     },
-    payload: {
-      length: 4,
-      payload: 'abcd'
-    }
+    payloadLength: 4,
+    payload: 'abcd',
+    next: 8
   }
-  const result = Buffer.from('FFFF', 'hex')
+  const result = Buffer.from([0xda, 0x40, 0x61, 0x62, 0x63, 0x64, 0x80])
+
   t.deepEqual(protocols.dynamicProtocol.generate(testPacket), result)
+  t.end()
+})
+
+test('Generating, buffer template', function (t) {
+  const testPacket = {
+    buffer1: 'abcd',
+    buffer2: 'efgh'
+  }
+  const result = Buffer.from([0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0x67, 0x68])
+
+  t.deepEqual(protocols.bufferOnly.generate(testPacket), result)
   t.end()
 })

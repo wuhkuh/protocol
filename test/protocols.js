@@ -54,4 +54,9 @@ const dynamicProtocol = new Protocol({
   next: { bitLength: 4 }
 })
 
-module.exports = { linearProtocol, embeddedProtocol, dynamicProtocol }
+const bufferOnly = new Protocol({
+  buffer1: { byteLength: 4, encoding: 'utf8' },
+  buffer2: { byteLength: 4, encoding: 'utf8' }
+})
+
+module.exports = { linearProtocol, embeddedProtocol, dynamicProtocol, bufferOnly }
