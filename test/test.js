@@ -28,7 +28,7 @@ const protocols = require('./protocols')
 const test = require('tape')
 
 test('Parsing, linear template', function (t) {
-  const testPacket = Buffer.from('1F', 'hex')
+  const testPacket = Buffer.from([0x1F])
   const result = {
     header: 'correct',
     flag1: 1,
@@ -41,7 +41,7 @@ test('Parsing, linear template', function (t) {
 })
 
 test('Parsing, embedded template', function (t) {
-  const testPacket = Buffer.from('A0', 'hex')
+  const testPacket = Buffer.from([0xA0])
   const result = {
     firstBits: {
       firstBit: 1,
@@ -91,7 +91,7 @@ test('Generating, embedded template', function (t) {
     },
     firstNibble: 6
   }
-  const result = Buffer.from('98', 'hex')
+  const result = Buffer.from([0x98])
 
   t.deepEqual(protocols.embeddedProtocol.generate(testPacket), result)
   t.end()
