@@ -1,3 +1,5 @@
+'use strict'
+
 const server = require('net').createServer()
 const protocol = require('./protocol')
 
