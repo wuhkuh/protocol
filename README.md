@@ -138,4 +138,5 @@ If there is no encoding given during parsing of a Buffer, it will retain this Bu
 <a name="license"></a>
 
 ## License
+
 MIT
