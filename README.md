@@ -111,7 +111,9 @@ type handling, followed by concatenation and outputting a single Buffer.
 Input object that shall be translated to a Buffer using a Protocol.
 
 If there is no encoding given during generation of a Buffer, it uses UTF-8.  
-If the input already contains a value of type Buffer, it will retain this Buffer.
+If the input already contains a value of type Buffer, it will retain this Buffer.  
+When a length is variable and points to key `x`, `x` does not automatically get a value assigned.  
+__This has to be set explicitly!__
 
 ---
 <a name="parse"></a>
