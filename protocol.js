@@ -61,7 +61,7 @@ class Protocol {
    * @returns {Buffer} output
    * @public
    */
-  generate (input) { return generate(input, this._schema) }
+  generate (input, callback) { return generate(input, this._schema, callback) }
 
   /**
    * Parse a Buffer, returning an Object according to the Protocol schema
@@ -69,7 +69,7 @@ class Protocol {
    * @returns {Object} output
    * @public
    */
-  parse (input) { return parse(input, this._schema) }
+  parse (input, callback) { return parse(input, this._schema, callback) }
 }
 
 module.exports = Protocol
