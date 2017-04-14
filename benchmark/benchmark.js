@@ -79,14 +79,14 @@ protocolSuite.add({
   'name': 'generateAsync',
   'defer': true,
   'fn': function (deferred) {
-    protocol.generate(input.protocol.generate, () => deferred.resolve())
+    protocol.generate(input.protocol.generate, () => { deferred.resolve() })
   }
 })
 protocolSuite.add({
   'name': 'parseAsync',
   'defer': true,
   'fn': function (deferred) {
-    protocol.generate(input.protocol.generate, () => deferred.resolve())
+    protocol.generate(input.protocol.generate, () => { deferred.resolve() })
   }
 })
 
