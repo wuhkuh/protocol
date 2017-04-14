@@ -83,6 +83,19 @@ test('Parsing, buffer template', function (t) {
   t.end()
 })
 
+test('Parsing asynchronously', function (t) {
+  const testPacket = Buffer.from([0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0x67, 0x68])
+  const result = {
+    buffer1: 'abcd',
+    buffer2: 'efgh'
+  }
+
+  protocols.bufferOnly.parse(testPacket, (packet) => {
+    t.deepEqual(packet, result)
+    t.end()
+  })
+})
+
 test('Generating, embedded template', function (t) {
   const testPacket = {
     firstBits: {
@@ -124,4 +137,17 @@ test('Generating, buffer template', function (t) {
 
   t.deepEqual(protocols.bufferOnly.generate(testPacket), result)
   t.end()
+})
+
+test('Generating asynchronously', function (t) {
+  const testPacket = {
+    buffer1: 'abcd',
+    buffer2: 'efgh'
+  }
+  const result = Buffer.from([0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0x67, 0x68])
+
+  protocols.bufferOnly.generate(testPacket, (packet) => {
+    t.deepEqual(packet, result)
+    t.end()
+  })
 })
