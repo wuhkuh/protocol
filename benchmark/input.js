@@ -24,25 +24,38 @@
 
 'use strict'
 
-/**
- * Unflatten an object with a dot-type notation
- * @param {Object} data Object to be unflattened
- * @returns {Object} Unflattened Object
- * @public
- */
-function unflatten (data) {
-  const result = { }
-
-  for (let i in data) {
-    let keys = i.split('.')
-
-    keys.reduce(function (r, e, j) {
-      return r[e] || (r[e] = isNaN(Number(keys[j + 1]))
-      ? (keys.length - 1 === j ? data[i] : {}) : [])
-    }, result)
+module.exports = {
+  modules: {
+    flatten: { firstBits: { firstBit: 1, secondBit: 0 }, firstNibble: 6 },
+    flattenSchema: {
+      header: [{
+        bit1: { bitLength: 1 },
+        bit2: { bitLength: 2 },
+        bit3: { bitLength: 2 },
+        bit4: { bitLength: 3 }
+      }],
+      payloadLength: { bitLength: 4 },
+      payload: { byteLength: 'payloadLength', encoding: 'utf8' },
+      next: { bitLength: 4 }
+    },
+    unflatten: { 'firstBits.firstBit': 1, 'firstBits.secondBit': 0, firstNibble: 6 },
+    setup: {
+      'header.bit1': { bitLength: 1 },
+      'header.bit2': { bitLength: 2 },
+      'header.bit3': { bitLength: 2 },
+      'header.bit4': { bitLength: 3 },
+      payloadLength: { bitLength: 4 },
+      payload: { byteLength: 'payloadLength', encoding: 'utf8' },
+      next: { bitLength: 4 }
+    }
+  },
+  protocol: {
+    generate: {
+      header: { bit1: 1, bit2: 2, bit3: 3, bit4: 2 },
+      payloadLength: 4,
+      payload: 'abcd',
+      next: 8
+    },
+    parse: Buffer.from([0xda, 0x40, 0x61, 0x62, 0x63, 0x64, 0x80])
   }
-
-  return result
 }
-
-module.exports = unflatten

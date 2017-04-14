@@ -15,6 +15,7 @@ This includes spaces and tabs, as well as commented characters.
 For more info, visit the [Node.JS LTS schedule](https://github.com/nodejs/LTS).
 - When possible, code should be conform to the latest ECMAScript version.  
 This is only possible if the current Node.JS releases support this.  
+- Variables should have names which are easy to understand.
 - Blocks of code that are not documented in the API should be private.
 - A `return` statement should have an empty line before it,  
 __unless__ this entire block of code is smaller than three lines long.

@@ -24,25 +24,16 @@
 
 'use strict'
 
-/**
- * Unflatten an object with a dot-type notation
- * @param {Object} data Object to be unflattened
- * @returns {Object} Unflattened Object
- * @public
- */
-function unflatten (data) {
-  const result = { }
+const Protocol = require('../')
 
-  for (let i in data) {
-    let keys = i.split('.')
-
-    keys.reduce(function (r, e, j) {
-      return r[e] || (r[e] = isNaN(Number(keys[j + 1]))
-      ? (keys.length - 1 === j ? data[i] : {}) : [])
-    }, result)
-  }
-
-  return result
-}
-
-module.exports = unflatten
+module.exports = new Protocol({
+  header: [{
+    bit1: { bitLength: 1 },
+    bit2: { bitLength: 2 },
+    bit3: { bitLength: 2 },
+    bit4: { bitLength: 3 }
+  }],
+  payloadLength: { bitLength: 4 },
+  payload: { byteLength: 'payloadLength', encoding: 'utf8' },
+  next: { bitLength: 4 }
+})

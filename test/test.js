@@ -28,7 +28,7 @@ const protocols = require('./protocols')
 const test = require('tape')
 
 test('Parsing, linear template', function (t) {
-  const testPacket = Buffer.from('1F', 'hex')
+  const testPacket = Buffer.from([0x1F])
   const result = {
     header: 'correct',
     flag1: 1,
@@ -41,7 +41,7 @@ test('Parsing, linear template', function (t) {
 })
 
 test('Parsing, embedded template', function (t) {
-  const testPacket = Buffer.from('A0', 'hex')
+  const testPacket = Buffer.from([0xA0])
   const result = {
     firstBits: {
       firstBit: 1,
@@ -83,6 +83,19 @@ test('Parsing, buffer template', function (t) {
   t.end()
 })
 
+test('Parsing asynchronously', function (t) {
+  const testPacket = Buffer.from([0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0x67, 0x68])
+  const result = {
+    buffer1: 'abcd',
+    buffer2: 'efgh'
+  }
+
+  protocols.bufferOnly.parse(testPacket, (packet) => {
+    t.deepEqual(packet, result)
+    t.end()
+  })
+})
+
 test('Generating, embedded template', function (t) {
   const testPacket = {
     firstBits: {
@@ -91,7 +104,7 @@ test('Generating, embedded template', function (t) {
     },
     firstNibble: 6
   }
-  const result = Buffer.from('98', 'hex')
+  const result = Buffer.from([0x98])
 
   t.deepEqual(protocols.embeddedProtocol.generate(testPacket), result)
   t.end()
@@ -124,4 +137,17 @@ test('Generating, buffer template', function (t) {
 
   t.deepEqual(protocols.bufferOnly.generate(testPacket), result)
   t.end()
+})
+
+test('Generating asynchronously', function (t) {
+  const testPacket = {
+    buffer1: 'abcd',
+    buffer2: 'efgh'
+  }
+  const result = Buffer.from([0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0x67, 0x68])
+
+  protocols.bufferOnly.generate(testPacket, (packet) => {
+    t.deepEqual(packet, result)
+    t.end()
+  })
 })
