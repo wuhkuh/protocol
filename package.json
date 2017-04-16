@@ -19,6 +19,7 @@
     "node": ">= 6.0.0"
   },
   "engineStrict": true,
+  "homepage": "https://github.com/wuhkuh/protocol#readme",
   "keywords": [
     "universal",
     "network",
@@ -40,6 +41,5 @@
     "lint": "standard",
     "test": "standard && tape test/test.js | tap-spec"
   },
-  "version": "0.1.3",
-  "website": "https://github.com/wuhkuh/protocol"
+  "version": "0.1.4"
 }
